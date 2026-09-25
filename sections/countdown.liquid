@@ -1,0 +1,166 @@
+<script
+  src="{{ 'countdown.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+
+{% liquid
+  if section.settings.background_color != blank
+    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  endif
+%}
+
+<div
+  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+></div>
+
+<div
+  class="section section--page-width{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+>
+  <countdown-component
+    class="countdown spacing-style"
+    style="{% render 'spacing-style', settings: section.settings %}"
+    data-target="{{ section.settings.target_date | escape }}"
+    {{ section.shopify_attributes }}
+  >
+    {% if section.settings.heading != blank %}
+      <h2 class="countdown__heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+    <div class="countdown__units">
+      <div class="countdown__unit">
+        <span class="countdown__value" ref="days">0</span>
+        <span class="countdown__label">jours</span>
+      </div>
+      <div class="countdown__unit">
+        <span class="countdown__value" ref="hours">00</span>
+        <span class="countdown__label">heures</span>
+      </div>
+      <div class="countdown__unit">
+        <span class="countdown__value" ref="minutes">00</span>
+        <span class="countdown__label">minutes</span>
+      </div>
+      <div class="countdown__unit">
+        <span class="countdown__value" ref="seconds">00</span>
+        <span class="countdown__label">secondes</span>
+      </div>
+    </div>
+    {% if section.settings.ended_text != blank %}
+      <p class="countdown__ended">{{ section.settings.ended_text }}</p>
+    {% endif %}
+  </countdown-component>
+</div>
+
+{% stylesheet %}
+  .countdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--gap-md, 1rem);
+    text-align: center;
+  }
+
+  .countdown__heading {
+    margin: 0;
+  }
+
+  .countdown__units {
+    display: flex;
+    gap: clamp(0.75rem, 3vw, 2.5rem);
+  }
+
+  .countdown__unit {
+    display: flex;
+    flex-direction: column;
+    min-width: 4ch;
+  }
+
+  .countdown__value {
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .countdown__label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+  }
+
+  .countdown__ended {
+    display: none;
+    margin: 0;
+  }
+
+  .countdown[data-ended] .countdown__units {
+    display: none;
+  }
+
+  .countdown[data-ended] .countdown__ended {
+    display: block;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Compte à rebours",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Les soldes arrivent"
+    },
+    {
+      "type": "text",
+      "id": "target_date",
+      "label": "Date cible",
+      "info": "Format AAAA-MM-JJTHH:MM, ex. 2026-12-25T00:00",
+      "default": "2026-12-25T00:00"
+    },
+    {
+      "type": "text",
+      "id": "ended_text",
+      "label": "Texte une fois terminé",
+      "default": "C'est parti !"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "placeholder": "t:settings.default"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Compte à rebours",
+      "category": "t:categories.layout"
+    }
+  ]
+}
+{% endschema %}

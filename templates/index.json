@@ -94,6 +94,17 @@
         "padding-block-end": 72
       }
     },
+    "countdown_claude": {
+      "type": "countdown",
+      "settings": {
+        "heading": "Les soldes arrivent",
+        "target_date": "2026-12-25T00:00",
+        "ended_text": "C'est parti !",
+        "background_color": "",
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
+    },
     "product_list_fa6P9H": {
       "type": "product-list",
       "blocks": {
@@ -409,6 +420,7 @@
   },
   "order": [
     "hero_jVaWmY",
+    "countdown_claude",
     "product_list_fa6P9H",
     "hero_FYe6Gn"
   ]
